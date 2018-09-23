@@ -1,4 +1,4 @@
-package com.pikaqiu.demo;
+package com.pikaqiu.spring;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
