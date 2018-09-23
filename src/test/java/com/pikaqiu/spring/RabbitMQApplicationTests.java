@@ -13,6 +13,9 @@ import java.util.HashMap;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class RabbitMQApplicationTests {
+    /**
+     * 消息队列的创建和队列中数据的清空
+     */
 
     @Autowired
     private RabbitAdmin rabbitAdmin;
