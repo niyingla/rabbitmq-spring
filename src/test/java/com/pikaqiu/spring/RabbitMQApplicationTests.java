@@ -137,9 +137,9 @@ public class RabbitMQApplicationTests {
         Message message = new Message("mq的消息".getBytes(), messageProperties);
 
         //直接发送内容
-        rabbitTemplate.send("topic002", "rabbit.amqp", message);
-
         rabbitTemplate.send("topic001", "spring.amqp", message);
+
+        rabbitTemplate.send("topic002", "rabbit.amqp", message);
 
     }
 }
