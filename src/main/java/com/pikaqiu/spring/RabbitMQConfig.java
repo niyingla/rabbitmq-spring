@@ -179,14 +179,14 @@ public class RabbitMQConfig {
         //messageListenerAdapter.setDefaultListenerMethod("consumeMessage");
 
 
-
         //设置消息转换器 默认是 字节数组 通过转换器可以转换成其他类型数据
         messageListenerAdapter.setMessageConverter(new TextMessageConvert());
 
 
-
-
         //2  消费方法和queue或者tag对应关系 的消费方式
+
+        //测试的时候可能因为加载顺序  有时候会走默认消费方法
+        //但是服务启动时是没有问题的
         HashMap<String, String> queueToMethod = new HashMap<>();
 
         queueToMethod.put("queue001", "method1");

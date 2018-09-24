@@ -15,8 +15,7 @@ import com.bfxy.spring.entity.Packaged;*/
 public class MessageDelegate {
 
     //处理消息
-    public void handleMessage (String messageBody) {
-        // (byte[] messageBody) {
+    public void handleMessage(byte[] messageBody) {
         System.err.println("默认方法, 消息内容:" + new String(messageBody));
     }
 	/*
