@@ -127,7 +127,7 @@ public class RabbitMQConfig {
         return rabbitTemplate;
     }
 
-    @Bean
+    @Bean//消息消费者监听容器
     public SimpleMessageListenerContainer simpleMessageListenerContainer(ConnectionFactory connectionFactory) {
 
         SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer(connectionFactory);
@@ -144,6 +144,8 @@ public class RabbitMQConfig {
         listenerContainer.setDefaultRequeueRejected(false);
         //设置签收模式
         listenerContainer.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        //是否外漏
+        listenerContainer.setExposeListenerChannel(true);
         //设置consumer唯一标签
         listenerContainer.setConsumerTagStrategy(new ConsumerTagStrategy() {
             @Override
