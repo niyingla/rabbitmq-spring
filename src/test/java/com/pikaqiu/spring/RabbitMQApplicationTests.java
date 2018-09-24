@@ -86,7 +86,7 @@ public class RabbitMQApplicationTests {
         rabbitTemplate.convertAndSend("topic001", "spring.amqp", message, new MessagePostProcessor() {
 
             //发送前进行修改的信息
-            
+
             @Override
             public Message postProcessMessage(Message message) throws AmqpException {
 
@@ -99,6 +99,33 @@ public class RabbitMQApplicationTests {
                 return message;
             }
         });
+    }
+
+    @Test
+    public void testSendMessage2() throws Exception {
+
+    /**/
+        MessageProperties messageProperties = new MessageProperties();
+
+        messageProperties.setContentType("text/plain");
+
+        messageProperties.getHeaders().put("desc", "消息描述");
+
+        messageProperties.getHeaders().put("type", "自定义消息描述。。。");
+
+        Message message = new Message("mq的消息".getBytes(), messageProperties);
+
+        rabbitTemplate.convertAndSend("topic001", "rabbit.amqp", message);
+
+        //直接发送内容
+        rabbitTemplate.convertAndSend("topic002", "rabbit.amqp", "你好啊");
+
+        Message message1 = new Message("mq的消息".getBytes(), messageProperties);
+
+        rabbitTemplate.convertAndSend("topic001", "rabbit.amqp", message);
+
+        rabbitTemplate.send("topic002", "rabbit.abc", message1);
+
     }
 }
 
