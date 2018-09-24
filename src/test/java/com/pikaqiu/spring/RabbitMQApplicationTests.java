@@ -115,16 +115,14 @@ public class RabbitMQApplicationTests {
 
         Message message = new Message("mq的消息".getBytes(), messageProperties);
 
-        rabbitTemplate.convertAndSend("topic001", "rabbit.amqp", message);
-
         //直接发送内容
-        rabbitTemplate.convertAndSend("topic002", "rabbit.amqp", "你好啊");
+        rabbitTemplate.convertAndSend("topic002", "rabbit.amqp", "你好啊--1");
 
-        Message message1 = new Message("mq的消息".getBytes(), messageProperties);
+        Message message1 = new Message("mq的消息--2".getBytes(), messageProperties);
 
-        rabbitTemplate.convertAndSend("topic001", "rabbit.amqp", message);
+        rabbitTemplate.convertAndSend("topic001", "spring.amqp", message1);
 
-        rabbitTemplate.send("topic002", "rabbit.abc", message1);
+        rabbitTemplate.convertAndSend("topic002", "rabbit.abc", message);
 
     }
 }
