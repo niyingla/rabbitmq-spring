@@ -174,11 +174,10 @@ public class RabbitMQConfig {
         MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(new MessageDelegate());
 
         //自己指定方法名
-        //messageListenerAdapter.setDefaultListenerMethod("");
+        messageListenerAdapter.setDefaultListenerMethod("consumeMessage");
 
-        messageListenerAdapter.setMessageConverter(new TextMessageConvert(
-
-        ));
+        //设置消息转换器 默认是 字节数组 通过转换器可以转换成其他类型数据
+        messageListenerAdapter.setMessageConverter(new TextMessageConvert());
 
         listenerContainer.setMessageListener(messageListenerAdapter);
 
