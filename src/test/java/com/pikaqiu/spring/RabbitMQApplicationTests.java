@@ -84,6 +84,9 @@ public class RabbitMQApplicationTests {
         Message message = new Message("这是我的第一个spring消息".getBytes(), messageProperties);
 
         rabbitTemplate.convertAndSend("topic001", "spring.amqp", message, new MessagePostProcessor() {
+
+            //发送前进行修改的信息
+            
             @Override
             public Message postProcessMessage(Message message) throws AmqpException {
 
