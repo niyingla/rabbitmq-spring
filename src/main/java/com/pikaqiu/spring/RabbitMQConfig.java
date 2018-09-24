@@ -1,18 +1,20 @@
 package com.pikaqiu.spring;
 
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import com.rabbitmq.client.Channel;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.ConsumerTagStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.UUID;
 
 @Configuration
 @ComponentScan({"com.pikaqiu.spring.*"})
@@ -126,13 +128,41 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public SimpleMessageListenerContainer simpleMessageListenerContainer() {
+    public SimpleMessageListenerContainer simpleMessageListenerContainer(ConnectionFactory connectionFactory) {
 
-        SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer();
+        SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer(connectionFactory);
 
         //同时监控多个队列
-        listenerContainer.setQueues(queue001(), queue002(), queue003());
+        listenerContainer.setQueues(queue001(), queue002(), queue003(), queue_image(), queue_pdf());
 
+        //设置当前的消费者数量
+        listenerContainer.setConcurrentConsumers(1);
+
+        //设置最大消费者数量
+        listenerContainer.setMaxConcurrentConsumers(5);
+        //设置重回队列
+        listenerContainer.setDefaultRequeueRejected(false);
+        //设置签收模式
+        listenerContainer.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        //设置consumer唯一标签
+        listenerContainer.setConsumerTagStrategy(new ConsumerTagStrategy() {
+            @Override
+            public String createConsumerTag(String queue) {
+
+                return queue + "_" + UUID.randomUUID().toString().replace("-", "");
+            }
+        });
+
+        //消费实例
+        listenerContainer.setMessageListener(new ChannelAwareMessageListener() {
+            @Override
+            public void onMessage(Message message, Channel channel) throws Exception {
+                //消息监听器 对消息的消费处理
+                String msg = new String(message.getBody());
+
+                System.out.println("---------------" + msg + "---------------");
+            }
+        });
         return listenerContainer;
     }
 }
