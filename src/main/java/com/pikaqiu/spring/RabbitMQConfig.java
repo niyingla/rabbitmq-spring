@@ -2,6 +2,7 @@ package com.pikaqiu.spring;
 
 
 import com.pikaqiu.spring.adapter.MessageDelegate;
+import com.pikaqiu.spring.convert.TextMessageConvert;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -173,7 +174,11 @@ public class RabbitMQConfig {
         MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(new MessageDelegate());
 
         //自己指定方法名
-        messageListenerAdapter.setDefaultListenerMethod("");
+        //messageListenerAdapter.setDefaultListenerMethod("");
+
+        messageListenerAdapter.setMessageConverter(new TextMessageConvert(
+
+        ));
 
         listenerContainer.setMessageListener(messageListenerAdapter);
 

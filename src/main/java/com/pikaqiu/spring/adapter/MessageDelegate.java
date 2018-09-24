@@ -6,6 +6,11 @@ import java.util.Map;
 /*import com.bfxy.spring.entity.Order;
 import com.bfxy.spring.entity.Packaged;*/
 
+/**
+ * 接受方法默认是 字节数组接收
+ *
+ * 如果是不要手动指定接受类型
+ */
 
 public class MessageDelegate {
 

@@ -104,7 +104,7 @@ public class RabbitMQApplicationTests {
     @Test
     public void testSendMessage2() throws Exception {
 
-    /**/
+        /**/
         MessageProperties messageProperties = new MessageProperties();
 
         messageProperties.setContentType("text/plain");
@@ -123,6 +123,22 @@ public class RabbitMQApplicationTests {
         rabbitTemplate.convertAndSend("topic001", "spring.amqp", message1);
 
         rabbitTemplate.convertAndSend("topic002", "rabbit.abc", message);
+
+    }
+
+    @Test
+    public void testSendMessage4Text() throws Exception {
+
+        /**/
+        MessageProperties messageProperties = new MessageProperties();
+
+        messageProperties.setContentType("text/plain");
+
+        Message message = new Message("mq的消息".getBytes(), messageProperties);
+
+        //直接发送内容
+        rabbitTemplate.send("topic002", "rabbit.amqp", message);
+
 
     }
 }
