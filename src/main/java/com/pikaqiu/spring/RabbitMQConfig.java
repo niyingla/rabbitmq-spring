@@ -172,6 +172,9 @@ public class RabbitMQConfig {
         //监听方式2
         MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(new MessageDelegate());
 
+        //自己指定方法名
+        messageListenerAdapter.setDefaultListenerMethod("");
+
         listenerContainer.setMessageListener(messageListenerAdapter);
 
         return listenerContainer;
