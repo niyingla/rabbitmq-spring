@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 @Configuration
@@ -173,11 +174,22 @@ public class RabbitMQConfig {
         //监听方式2
         MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(new MessageDelegate());
 
-        //自己指定消费方法名
+        //1  默认 自己指定消费方法名的消费方式
         //messageListenerAdapter.setDefaultListenerMethod("consumeMessage");
+
+
 
         //设置消息转换器 默认是 字节数组 通过转换器可以转换成其他类型数据
         //messageListenerAdapter.setMessageConverter(new TextMessageConvert());
+
+
+        
+
+        //2  消费方法和queue或者tag对应关系 的消费方式
+        /*
+        HashMap<String, String> queueToMethod = new HashMap<>();
+
+        messageListenerAdapter.setQueueOrTagToMethodName(queueToMethod);*/
 
         listenerContainer.setMessageListener(messageListenerAdapter);
 
