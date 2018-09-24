@@ -1,6 +1,7 @@
 package com.pikaqiu.spring;
 
 
+import com.pikaqiu.spring.adapter.MessageDelegate;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -9,6 +10,7 @@ import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.ConsumerTagStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -155,8 +157,9 @@ public class RabbitMQConfig {
             }
         });
 
+        //监听方式1
         //消费实例
-        listenerContainer.setMessageListener(new ChannelAwareMessageListener() {
+       /* listenerContainer.setMessageListener(new ChannelAwareMessageListener() {
             @Override
             public void onMessage(Message message, Channel channel) throws Exception {
                 //消息监听器 对消息的消费处理
@@ -164,7 +167,13 @@ public class RabbitMQConfig {
 
                 System.out.println("---------------" + msg + "---------------");
             }
-        });
+        });*/
+
+        //监听方式2
+        MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(new MessageDelegate());
+
+        listenerContainer.setMessageListener(messageListenerAdapter);
+
         return listenerContainer;
     }
 }
