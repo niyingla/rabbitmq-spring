@@ -180,16 +180,19 @@ public class RabbitMQConfig {
 
 
         //设置消息转换器 默认是 字节数组 通过转换器可以转换成其他类型数据
-        //messageListenerAdapter.setMessageConverter(new TextMessageConvert());
+        messageListenerAdapter.setMessageConverter(new TextMessageConvert());
 
 
-        
+
 
         //2  消费方法和queue或者tag对应关系 的消费方式
-        /*
         HashMap<String, String> queueToMethod = new HashMap<>();
 
-        messageListenerAdapter.setQueueOrTagToMethodName(queueToMethod);*/
+        queueToMethod.put("queue001", "method1");
+
+        queueToMethod.put("queue002", "method2");
+
+        messageListenerAdapter.setQueueOrTagToMethodName(queueToMethod);
 
         listenerContainer.setMessageListener(messageListenerAdapter);
 
