@@ -2,8 +2,10 @@ package com.pikaqiu.spring;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -19,6 +21,9 @@ public class RabbitMQApplicationTests {
 
     @Autowired
     private RabbitAdmin rabbitAdmin;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Test
     public void contextLoads() {
@@ -65,6 +70,32 @@ public class RabbitMQApplicationTests {
 //    --------------------------------------操作-------------------------------------
         //清空指定队列的数组         队列名称    不等待
         rabbitAdmin.purgeQueue("dlx.queue", false);
+    }
+
+    @Test
+    public void testSendMessage() throws Exception {
+
+        MessageProperties messageProperties = new MessageProperties();
+
+        messageProperties.getHeaders().put("desc", "消息描述");
+
+        messageProperties.getHeaders().put("type", "自定义消息描述。。。");
+
+        Message message = new Message("这是我的第一个spring消息".getBytes(), messageProperties);
+
+        rabbitTemplate.convertAndSend("topic001", "spring.amqp", message, new MessagePostProcessor() {
+            @Override
+            public Message postProcessMessage(Message message) throws AmqpException {
+
+                System.out.println("---------------添加额外设置-------------");
+
+                message.getMessageProperties().getHeaders().put("desc", "额外修改的描述");
+
+                message.getMessageProperties().getHeaders().put("attr", "额外新加的");
+
+                return message;
+            }
+        });
     }
 }
 
