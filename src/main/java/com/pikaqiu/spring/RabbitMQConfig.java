@@ -13,6 +13,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.ConsumerTagStrategy;
+import org.springframework.amqp.support.converter.DefaultJackson2JavaTypeMapper;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -176,24 +178,31 @@ public class RabbitMQConfig {
         MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(new MessageDelegate());
 
         //1  默认 自己指定消费方法名的消费方式
-        //messageListenerAdapter.setDefaultListenerMethod("consumeMessage");
-
+        messageListenerAdapter.setDefaultListenerMethod("consumeMessage");
 
         //设置消息转换器 默认是 字节数组 通过转换器可以转换成其他类型数据
-        messageListenerAdapter.setMessageConverter(new TextMessageConvert());
+        //messageListenerAdapter.setMessageConverter(new TextMessageConvert());
+
+        //1.1 json格式消息转换器
+        Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
+        messageListenerAdapter.setMessageConverter(jackson2JsonMessageConverter);
+
+        //1.2 支持java对象转换
+        DefaultJackson2JavaTypeMapper defaultJackson2JavaTypeMapper = new DefaultJackson2JavaTypeMapper();
+        jackson2JsonMessageConverter.setJavaTypeMapper(defaultJackson2JavaTypeMapper);
 
 
         //2  消费方法和queue或者tag对应关系 的消费方式
 
         //测试的时候可能因为加载顺序  有时候会走默认消费方法
         //但是服务启动时是没有问题的
-        HashMap<String, String> queueToMethod = new HashMap<>();
-
-        queueToMethod.put("queue001", "method1");
-
-        queueToMethod.put("queue002", "method2");
-
-        messageListenerAdapter.setQueueOrTagToMethodName(queueToMethod);
+//        HashMap<String, String> queueToMethod = new HashMap<>();
+//
+//        queueToMethod.put("queue001", "method1");
+//
+//        queueToMethod.put("queue002", "method2");
+//
+//        messageListenerAdapter.setQueueOrTagToMethodName(queueToMethod);
 
         listenerContainer.setMessageListener(messageListenerAdapter);
 

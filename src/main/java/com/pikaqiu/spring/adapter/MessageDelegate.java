@@ -1,5 +1,8 @@
 package com.pikaqiu.spring.adapter;
 
+import com.pikaqiu.spring.entity.Order;
+import com.pikaqiu.spring.entity.Packaged;
+
 import java.io.File;
 import java.util.Map;
 
@@ -35,7 +38,7 @@ public class MessageDelegate {
     public void method2(String messageBody) {
         System.err.println("method2 收到消息内容:" + new String(messageBody));
     }
-    /**
+
 
      public void consumeMessage(Map messageBody) {
      System.err.println("map方法, 消息内容:" + messageBody);
@@ -57,5 +60,5 @@ public class MessageDelegate {
      public void consumeMessage(File file) {
      System.err.println("文件对象 方法, 消息内容:" + file.getName());
      }
-     */
+     /***/
 }
