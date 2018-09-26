@@ -1,5 +1,8 @@
 package com.pikaqiu.spring.convert;
 
+/**
+ * @author pikaqiu
+ */
 public class ConverterBody {
 
 	private byte[] body;
