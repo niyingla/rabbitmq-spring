@@ -6,8 +6,6 @@ import com.pikaqiu.spring.entity.Packaged;
 import java.io.File;
 import java.util.Map;
 
-/*import com.bfxy.spring.entity.Order;
-import com.bfxy.spring.entity.Packaged;*/
 
 /**
  * 接受方法默认是 字节数组接收
@@ -60,5 +58,4 @@ public class MessageDelegate {
      public void consumeMessage(File file) {
      System.err.println("文件对象 方法, 消息内容:" + file.getName());
      }
-     /***/
 }
