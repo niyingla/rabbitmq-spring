@@ -189,14 +189,17 @@ public class RabbitMQConfig {
         messageListenerAdapter.setMessageConverter(jackson2JsonMessageConverter);*/
 
         MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
+
         adapter.setDefaultListenerMethod("consumeMessage");
 
         Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
 
         DefaultJackson2JavaTypeMapper javaTypeMapper = new DefaultJackson2JavaTypeMapper();
+
         jackson2JsonMessageConverter.setJavaTypeMapper(javaTypeMapper);
 
         adapter.setMessageConverter(jackson2JsonMessageConverter);
+
         listenerContainer.setMessageListener(adapter);
 
         //2  消费方法和queue或者tag对应关系 的消费方式
