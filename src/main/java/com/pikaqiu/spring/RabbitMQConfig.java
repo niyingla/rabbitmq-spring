@@ -179,14 +179,25 @@ public class RabbitMQConfig {
         //messageListenerAdapter.setMessageConverter(new TextMessageConvert());
 
         //1.1 json格式消息转换器
-        Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
+        /*Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
 
         //1.2 支持java对象转换
         DefaultJackson2JavaTypeMapper defaultJackson2JavaTypeMapper = new DefaultJackson2JavaTypeMapper();
 
         jackson2JsonMessageConverter.setJavaTypeMapper(defaultJackson2JavaTypeMapper);
 
-        messageListenerAdapter.setMessageConverter(jackson2JsonMessageConverter);
+        messageListenerAdapter.setMessageConverter(jackson2JsonMessageConverter);*/
+
+        MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
+        adapter.setDefaultListenerMethod("consumeMessage");
+
+        Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
+
+        DefaultJackson2JavaTypeMapper javaTypeMapper = new DefaultJackson2JavaTypeMapper();
+        jackson2JsonMessageConverter.setJavaTypeMapper(javaTypeMapper);
+
+        adapter.setMessageConverter(jackson2JsonMessageConverter);
+        listenerContainer.setMessageListener(adapter);
 
         //2  消费方法和queue或者tag对应关系 的消费方式
 
