@@ -219,6 +219,7 @@ public class RabbitMQApplicationTests {
         MessageProperties messageProperties2 = new MessageProperties();
         //这里注意一定要修改contentType为 application/json
         messageProperties2.setContentType("application/json");
+//        messageProperties2.getHeaders().put("__TypeId__", "packaged");
         messageProperties2.getHeaders().put("__TypeId__", "packaged");
         Message message2 = new Message(json2.getBytes(), messageProperties2);
         rabbitTemplate.send("topic001", "spring.pack", message2);
