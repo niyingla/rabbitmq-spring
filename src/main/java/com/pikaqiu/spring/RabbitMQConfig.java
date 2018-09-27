@@ -221,10 +221,12 @@ public class RabbitMQConfig {
         Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
         DefaultJackson2JavaTypeMapper javaTypeMapper = new DefaultJackson2JavaTypeMapper();
 
+        //创建标签和类的映射map
         Map<String, Class<?>> idClassMapping = new HashMap<>(2);
+        //order 标签绑定 Order类  发送时设置标签 "__TypeId__", "order"
         idClassMapping.put("order", com.pikaqiu.spring.entity.Order.class);
         idClassMapping.put("packaged", com.pikaqiu.spring.entity.Packaged.class);
-
+        //放入
         javaTypeMapper.setIdClassMapping(idClassMapping);
 
         jackson2JsonMessageConverter.setJavaTypeMapper(javaTypeMapper);

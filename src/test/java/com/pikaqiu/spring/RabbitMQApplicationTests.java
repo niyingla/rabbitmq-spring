@@ -182,6 +182,7 @@ public class RabbitMQApplicationTests {
         MessageProperties messageProperties = new MessageProperties();
         //这里注意一定要修改contentType为 application/json
         messageProperties.setContentType("application/json");
+        //这个head字段会被DefaultJackson2JavaTypeMapper识别转成对应的对象
         messageProperties.getHeaders().put("__TypeId__", "com.pikaqiu.spring.entity.Order");
         Message message = new Message(json.getBytes(), messageProperties);
 
