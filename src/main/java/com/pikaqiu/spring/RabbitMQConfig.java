@@ -255,10 +255,10 @@ public class RabbitMQConfig {
 		convert.addDelegate("image", imageConverter);
 
 		PDFMessageConverter pdfConverter = new PDFMessageConverter();
-		convert.addDelegate("application/pdf", pdfConverter);*/
+		convert.addDelegate("application/pdf", pdfConverter);
 
-
-        //adapter.setMessageConverter(convert);
+        adapter.setMessageConverter(convert);
+        */
         container.setMessageListener(adapter);
 
         return container;
