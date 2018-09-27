@@ -16,8 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Configuration
@@ -197,6 +195,8 @@ public class RabbitMQConfig {
 
         DefaultJackson2JavaTypeMapper javaTypeMapper = new DefaultJackson2JavaTypeMapper();
         jackson2JsonMessageConverter.setJavaTypeMapper(javaTypeMapper);
+        //防止信任报错
+        javaTypeMapper.setTrustedPackages("*");
 
         adapter.setMessageConverter(jackson2JsonMessageConverter);
         container.setMessageListener(adapter);
