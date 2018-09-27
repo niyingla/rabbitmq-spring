@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Configuration
@@ -178,9 +180,11 @@ public class RabbitMQConfig {
 
         // 1.1 支持json格式的转换器
         /*MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
+        //指定消费消息方法
         adapter.setDefaultListenerMethod("consumeMessage");
-
+        //创建json转换类
         Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
+
         adapter.setMessageConverter(jackson2JsonMessageConverter);
 
         container.setMessageListener(adapter);*/
@@ -189,7 +193,7 @@ public class RabbitMQConfig {
 
         // 1.2 DefaultJackson2JavaTypeMapper & Jackson2JsonMessageConverter 支持java对象转换
         //            创建消息监听适配器                             并制定消息处理类
-        MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
+        /*MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
 
         //指定消费消息方法
         adapter.setDefaultListenerMethod("consumeMessage");
@@ -207,16 +211,17 @@ public class RabbitMQConfig {
 
         adapter.setMessageConverter(jackson2JsonMessageConverter);
 
-        container.setMessageListener(adapter);
+        container.setMessageListener(adapter);*/
 
 
         //1.3 DefaultJackson2JavaTypeMapper & Jackson2JsonMessageConverter 支持java对象多映射转换
-        /*MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
+
+        MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
         adapter.setDefaultListenerMethod("consumeMessage");
         Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
         DefaultJackson2JavaTypeMapper javaTypeMapper = new DefaultJackson2JavaTypeMapper();
 
-        Map<String, Class<?>> idClassMapping = new HashMap<String, Class<?>>();
+        Map<String, Class<?>> idClassMapping = new HashMap<>(2);
         idClassMapping.put("order", com.pikaqiu.spring.entity.Order.class);
         idClassMapping.put("packaged", com.pikaqiu.spring.entity.Packaged.class);
 
@@ -225,7 +230,7 @@ public class RabbitMQConfig {
         jackson2JsonMessageConverter.setJavaTypeMapper(javaTypeMapper);
         adapter.setMessageConverter(jackson2JsonMessageConverter);
         container.setMessageListener(adapter);
-*/
+
 
         //1.4 ext convert
 
