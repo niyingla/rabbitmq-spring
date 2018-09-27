@@ -238,7 +238,7 @@ public class RabbitMQConfig {
         container.setMessageListener(adapter);*/
 
 
-        //1.4 ext convert 多类型转换器
+        //1.4 ext convert 多类型转换器 根据设置的contenType找到对应的转换器转换
 
         MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
         adapter.setDefaultListenerMethod("consumeMessage");
