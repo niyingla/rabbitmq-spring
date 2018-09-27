@@ -188,17 +188,25 @@ public class RabbitMQConfig {
 
 
         // 1.2 DefaultJackson2JavaTypeMapper & Jackson2JsonMessageConverter 支持java对象转换
+        //            创建消息监听适配器                             并制定消息处理类
         MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
+
+        //指定消费消息方法
         adapter.setDefaultListenerMethod("consumeMessage");
 
+        //创建json转换类
         Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
 
+        //创建java映射类
         DefaultJackson2JavaTypeMapper javaTypeMapper = new DefaultJackson2JavaTypeMapper();
+
         jackson2JsonMessageConverter.setJavaTypeMapper(javaTypeMapper);
-        //防止信任报错
+
+        //设置rabbitmq 信任package
         javaTypeMapper.setTrustedPackages("*");
 
         adapter.setMessageConverter(jackson2JsonMessageConverter);
+
         container.setMessageListener(adapter);
 
 
@@ -216,8 +224,8 @@ public class RabbitMQConfig {
 
         jackson2JsonMessageConverter.setJavaTypeMapper(javaTypeMapper);
         adapter.setMessageConverter(jackson2JsonMessageConverter);
-        container.setMessageListener(adapter);*/
-
+        container.setMessageListener(adapter);
+*/
 
         //1.4 ext convert
 
@@ -251,95 +259,4 @@ public class RabbitMQConfig {
         return container;
 
     }
-
-
-    /*@Bean//消息消费者监听容器
-    public SimpleMessageListenerContainer simpleMessageListenerContainer(ConnectionFactory connectionFactory) {
-
-        SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer(connectionFactory);
-
-        //同时监控多个队列
-        listenerContainer.setQueues(queue001(), queue002(), queue003(), queue_image(), queue_pdf());
-
-        //设置当前的消费者数量
-        listenerContainer.setConcurrentConsumers(1);
-
-        //设置最大消费者数量
-        listenerContainer.setMaxConcurrentConsumers(5);
-        //设置重回队列
-        listenerContainer.setDefaultRequeueRejected(false);
-        //设置签收模式
-        listenerContainer.setAcknowledgeMode(AcknowledgeMode.AUTO);
-        //是否外漏
-        listenerContainer.setExposeListenerChannel(true);
-        //设置consumer唯一标签
-        listenerContainer.setConsumerTagStrategy(new ConsumerTagStrategy() {
-            @Override
-            public String createConsumerTag(String queue) {
-
-                return queue + "_" + UUID.randomUUID().toString().replace("-", "");
-            }
-        });
-
-        //监听方式1
-        //消费实例
-       *//* listenerContainer.setMessageListener(new ChannelAwareMessageListener() {
-            @Override
-            public void onMessage(Message message, Channel channel) throws Exception {
-                //消息监听器 对消息的消费处理
-                String msg = new String(message.getBody());
-
-                System.out.println("---------------" + msg + "---------------");
-            }
-        });*//*
-
-        //监听方式2
-        MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(new MessageDelegate());
-
-        //1  默认 自己指定消费方法名的消费方式
-        messageListenerAdapter.setDefaultListenerMethod("consumeMessage");
-
-        //设置消息转换器 默认是 字节数组 通过转换器可以转换成其他类型数据
-        //messageListenerAdapter.setMessageConverter(new TextMessageConvert());
-
-        //1.1 json格式消息转换器
-        *//*Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
-
-        //1.2 支持java对象转换
-        DefaultJackson2JavaTypeMapper defaultJackson2JavaTypeMapper = new DefaultJackson2JavaTypeMapper();
-
-        jackson2JsonMessageConverter.setJavaTypeMapper(defaultJackson2JavaTypeMapper);
-
-        messageListenerAdapter.setMessageConverter(jackson2JsonMessageConverter);*//*
-
-        MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
-
-        adapter.setDefaultListenerMethod("consumeMessage");
-
-        Jackson2JsonMessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
-
-        DefaultJackson2JavaTypeMapper javaTypeMapper = new DefaultJackson2JavaTypeMapper();
-
-        jackson2JsonMessageConverter.setJavaTypeMapper(javaTypeMapper);
-
-        adapter.setMessageConverter(jackson2JsonMessageConverter);
-
-        listenerContainer.setMessageListener(adapter);
-
-        //2  消费方法和queue或者tag对应关系 的消费方式
-
-        //测试的时候可能因为加载顺序  有时候会走默认消费方法
-        //但是服务启动时是没有问题的
-//        HashMap<String, String> queueToMethod = new HashMap<>();
-//
-//        queueToMethod.put("queue001", "method1");
-//
-//        queueToMethod.put("queue002", "method2");
-//
-//        messageListenerAdapter.setQueueOrTagToMethodName(queueToMethod);
-
-        listenerContainer.setMessageListener(messageListenerAdapter);
-
-        return listenerContainer;
-    }*/
 }
